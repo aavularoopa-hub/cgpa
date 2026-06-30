@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator | Professional SGPA to CGPA Converter</title>
+    <meta name="description" content="Calculate your CGPA easily with our free, responsive, and accurate CGPA Calculator. Convert CGPA to percentage instantly. Supports up to 10 semesters.">
+    <meta name="keywords" content="CGPA Calculator, SGPA to CGPA, Grade Calculator, GPA Converter, Education Tool">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --bg-light: #f8f9fa;
+            --text-dark: #333;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-light: #121212;
+            --text-dark: #e0e0e0;
+            --primary-color: #375a7f;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: #fff !important;
+        }
+        [data-theme="dark"] .navbar { background-color: #1f1f1f !important; }
+
+        .hero-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .calc-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-top: -50px;
+            transition: var(--transition);
+        }
+        [data-theme="dark"] .calc-card { background: #1f1f1f; color: #fff; }
+
+        .semester-row {
+            margin-bottom: 15px;
+            animation: fadeInDown 0.5s;
+        }
+
+        .result-box {
+            background: #e7f3ff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 2px dashed var(--primary-color);
+        }
+        [data-theme="dark"] .result-box { background: #2c2c2c; color: #fff; }
+
+        .ad-placeholder {
+            background: #eee;
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            border-radius: 10px;
+        }
+
+        .nav-link { cursor: pointer; font-weight: 500; }
+        .page-section { display: none; padding: 60px 0; }
+        .active-section { display: block; animation: fadeIn 0.5s; }
+
+        #dark-mode-toggle { cursor: pointer; font-size: 1.2rem; }
+
+        .btn-primary { border-radius: 10px; padding: 10px 25px; }
+
+        footer { background: #f1f1f1; padding: 40px 0; margin-top: 50px; }
+        [data-theme="dark"] footer { background: #0a0a0a; }
+
+        /* SEO Friendly utility */
+        .hidden-title { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#" onclick="showSection('home')">
+                <i class="fas fa-graduation-cap me-2"></i>CGPA Calc
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('home')">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('about')">About</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('contact')">Contact</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <i id="dark-mode-toggle" class="fas fa-moon text-primary"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- AdSense Top Placeholder -->
+    <div class="container">
+        <div class="ad-placeholder">
+            <span>[AdSense Horizontal Display Ad]</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content">
+
+        <!-- Home / Calculator Section -->
+        <section id="home" class="page-section active-section">
+            <div class="hero-section text-center">
+                <div class="container">
+                    <h1 class="fw-bold animate__animated animate__fadeInUp">CGPA Calculator</h1>
+                    <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Calculate your cumulative grade point average effortlessly.</p>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="calc-card">
+                            <div id="semesters-container">
+                                <!-- Default Semester 1 -->
+                                <div class="row semester-row g-3 align-items-center">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold">Semester 1 SGPA</label>
+                                        <input type="number" step="0.01" min="0" max="10" class="form-control sgpa-input" placeholder="Enter SGPA (e.g. 8.5)" oninput="calculate()">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-bold">Credits (Optional)</label>
+                                        <input type="number" step="1" min="1" class="form-control credit-input" placeholder="e.g. 20" oninput="calculate()">
+                                    </div>
+                                    <div class="col-md-2 mt-md-4">
+                                        <button class="btn btn-outline-danger w-100 remove-btn" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-4">
+                                <button class="btn btn-primary" onclick="addRow()"><i class="fas fa-plus me-2"></i>Add Semester</button>
+                                <button class="btn btn-outline-secondary" onclick="resetCalculator()"><i class="fas fa-redo me-2"></i>Reset</button>
+                            </div>
+
+                            <div class="result-area mt-5">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="result-box">
+                                            <h4 class="mb-1">Final CGPA</h4>
+                                            <h2 class="text-primary fw-bold mb-0" id="cgpa-display">0.00</h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="result-box">
+                                            <h4 class="mb-1">Percentage (%)</h4>
+                                            <h2 class="text-success fw-bold mb-0" id="percent-display">0.00%</h2>
+                                            <small class="text-muted">(Formula: CGPA × 9.5)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="form-label">Conversion Factor (Formula)</label>
+                                <div class="input-group mb-3" style="max-width: 250px;">
+                                    <span class="input-group-text">CGPA ×</span>
+                                    <input type="number" id="factor" class="form-control" value="9.5" step="0.1" oninput="calculate()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Ad -->
+                    <div class="col-lg-4 mt-5 mt-lg-0">
+                        <div class="ad-placeholder" style="min-height: 400px;">
+                            <span>[AdSense Sidebar Vertical Ad]</span>
+                        </div>
+                        <div class="card border-0 shadow-sm mt-4 p-3">
+                            <h5>Quick Tips</h5>
+                            <ul class="small text-muted">
+                                <li>Ensure SGPA is between 0 and 10.</li>
+                                <li>Use the "Credits" field for weighted average calculations.</li>
+                                <li>Dark mode helps reduce eye strain at night.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="page-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <h2 class="fw-bold border-bottom pb-2">About CGPA Calculator</h2>
+                        <p>Our CGPA Calculator is a free educational tool designed for university students to track their academic performance. Whether you follow a 4.0 or 10.0 grading system, our tool provides accurate calculations instantly.</p>
+                        <p><strong>Why use our tool?</strong></p>
+                        <ul>
+                            <li>Real-time calculations without page refreshes.</li>
+                            <li>Mobile-responsive design for use on the go.</li>
+                            <li>Configurable conversion formulas to match your university standards.</li>
+                            <li>Privacy-focused: Your data never leaves your browser.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="page-section">
+            <div class="container text-center">
+                <h2 class="fw-bold">Contact Us</h2>
+                <p>Have suggestions or found a bug? Reach out to us.</p>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-6">
+                        <div class="card p-4 shadow-sm border-0">
+                            <form id="contactForm">
+                                <input type="text" class="form-control mb-3" placeholder="Your Name" required>
+                                <input type="email" class="form-control mb-3" placeholder="Email Address" required>
+                                <textarea class="form-control mb-3" rows="4" placeholder="Your Message" required></textarea>
+                                <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Privacy Policy Section -->
+        <section id="privacy" class="page-section">
+            <div class="container">
+                <div class="col-md-10 mx-auto">
+                    <h2>Privacy Policy</h2>
+                    <p>At CGPA Calculator, we prioritize your privacy. This website does not collect, store, or share any personal data entered into the calculator. All calculations are performed locally on your device using JavaScript.</p>
+                    <p>We use third-party advertising services like Google AdSense which may use cookies to serve ads based on your visits to this and other websites.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-primary">CGPA Calculator</h5>
+                    <p class="small text-muted">A fast and reliable tool for students to calculate their GPA, SGPA, and CGPA with ease.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold">Quick Links</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-decoration-none text-muted" onclick="showSection('privacy')">Privacy Policy</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted" onclick="showSection('terms')">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted" onclick="showSection('disclaimer')">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold">Follow Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-primary"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-primary"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-primary"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center small text-muted">
+                &copy; 2023 CGPA Calculator. Designed with <i class="fas fa-heart text-danger"></i> for students.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // NAVIGATION LOGIC
+        function showSection(sectionId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            document.getElementById(sectionId).classList.add('active-section');
+            window.scrollTo(0,0);
+            
+            // Close mobile menu if open
+            const menu = document.getElementById('navbarNav');
+            if(menu.classList.contains('show')) {
+                new bootstrap.Collapse(menu).hide();
+            }
+        }
+
+        // CALCULATOR LOGIC
+        let semesterCount = 1;
+
+        function addRow() {
+            semesterCount++;
+            const container = document.getElementById('semesters-container');
+            const newRow = document.createElement('div');
+            newRow.className = 'row semester-row g-3 align-items-center';
+            newRow.innerHTML = `
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Semester ${semesterCount} SGPA</label>
+                    <input type="number" step="0.01" min="0" max="10" class="form-control sgpa-input" placeholder="Enter SGPA" oninput="calculate()">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Credits</label>
+                    <input type="number" step="1" min="1" class="form-control credit-input" placeholder="Credits" oninput="calculate()">
+                </div>
+                <div class="col-md-2 mt-md-4">
+                    <button class="btn btn-outline-danger w-100 remove-btn" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+            container.appendChild(newRow);
+        }
+
+        function removeRow(btn) {
+            const rows = document.querySelectorAll('.semester-row');
+            if(rows.length > 1) {
+                btn.closest('.semester-row').remove();
+                calculate();
+            } else {
+                alert("At least one semester is required!");
+            }
+        }
+
+        function calculate() {
+            const sgpaInputs = document.querySelectorAll('.sgpa-input');
+            const creditInputs = document.querySelectorAll('.credit-input');
+            const factor = parseFloat(document.getElementById('factor').value) || 9.5;
+            
+            let totalPoints = 0;
+            let totalCredits = 0;
+            let simpleSum = 0;
+            let count = 0;
+            let hasCredits = false;
+
+            sgpaInputs.forEach((input, index) => {
+                const val = parseFloat(input.value);
+                const credit = parseFloat(creditInputs[index].value);
+
+                if (!isNaN(val)) {
+                    if (!isNaN(credit) && credit > 0) {
+                        totalPoints += (val * credit);
+                        totalCredits += credit;
+                        hasCredits = true;
+                    } else {
+                        simpleSum += val;
+                    }
+                    count++;
+                }
+            });
+
+            let finalCGPA = 0;
+            if (count > 0) {
+                if (hasCredits) {
+                    // Handle cases where some rows have credits and some don't
+                    // Ideally, user should provide credits for all or none.
+                    // If credits are provided, we use weighted average for those rows.
+                    finalCGPA = totalCredits > 0 ? (totalPoints / totalCredits) : (simpleSum / count);
+                } else {
+                    finalCGPA = simpleSum / count;
+                }
+            }
+
+            const cgpaDisplay = document.getElementById('cgpa-display');
+            const percentDisplay = document.getElementById('percent-display');
+
+            const formattedCGPA = finalCGPA.toFixed(2);
+            cgpaDisplay.innerText = formattedCGPA;
+            percentDisplay.innerText = (finalCGPA * factor).toFixed(2) + "%";
+            
+            // Add a little pop animation on change
+            cgpaDisplay.classList.add('animate__animated', 'animate__pulse');
+            setTimeout(() => cgpaDisplay.classList.remove('animate__pulse'), 500);
+        }
+
+        function resetCalculator() {
+            document.getElementById('semesters-container').innerHTML = `
+                <div class="row semester-row g-3 align-items-center">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Semester 1 SGPA</label>
+                        <input type="number" step="0.01" min="0" max="10" class="form-control sgpa-input" placeholder="Enter SGPA" oninput="calculate()">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Credits (Optional)</label>
+                        <input type="number" step="1" min="1" class="form-control credit-input" placeholder="e.g. 20" oninput="calculate()">
+                    </div>
+                    <div class="col-md-2 mt-md-4">
+                        <button class="btn btn-outline-danger w-100 remove-btn" onclick="removeRow(this)"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            semesterCount = 1;
+            calculate();
+        }
+
+        // DARK MODE TOGGLE
+        const themeToggle = document.getElementById('dark-mode-toggle');
+        themeToggle.addEventListener('click', () => {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        // Handle Contact Form
+        document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! This is a demo contact form.');
+            e.target.reset();
+        });
+    </script>
+
+    <!-- AdSense Auto Ads (Placeholder for user to insert their ID) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</body>
+</html>
