@@ -103,7 +103,17 @@
         [data-theme="dark"] footer { background: #0a0a0a; }
 
         /* SEO Friendly utility */
-        .hidden-title { display: none; }
+.hidden-title {
+    display: none;
+}
+
+/* Average Performance Badge */
+.bg-orange {
+    background-color: #fd7e14 !important;
+    color: white;
+}
+
+</style>
     </style>
 </head>
 <body>
@@ -123,7 +133,9 @@
                     <li class="nav-item"><a class="nav-link" onclick="showSection('about')">About</a></li>
                     <li class="nav-item"><a class="nav-link" onclick="showSection('contact')">Contact</a></li>
                     <li class="nav-item">
-    <a class="nav-link" href="privacy.html">Privacy Policy</a>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('attendance')">Attendance</a>
+</li>
+                       <a class="nav-link" href="privacy.html">Privacy Policy</a>
 </li>
 
 <li class="nav-item">
@@ -213,6 +225,92 @@
                             </div>
                         </div>
                     </div>
+                    <!-- SGPA Calculator -->
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>SGPA Calculator</h2>
+            <p class="mb-0">Calculate your Semester Grade Point Average</p>
+        </div>
+
+        <div class="card-body">
+
+            <div id="subjects">
+
+                <div class="row g-3 mb-3 subject-row">
+
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="Subject Name (Optional)">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="number" class="form-control" placeholder="Credits">
+                    </div>
+
+                    <div class="col-md-3">
+                        <select class="form-select">
+                            <option>Select Grade</option>
+                            <option>O</option>
+                            <option>A+</option>
+                            <option>A</option>
+                            <option>B+</option>
+                            <option>B</option>
+                            <option>C</option>
+                            <option>P</option>
+                            <option>F</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-danger w-100 remove-btn">Remove</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="btn btn-success mt-3">
+                + Add Subject
+            </button>
+
+            <button class="btn btn-primary mt-3" id="calculateSGPA">
+                Calculate SGPA
+            </button>
+
+            <button class="btn btn-secondary mt-3" id="resetSGPA">
+                Reset
+            </button>
+
+            <hr>
+
+            <div class="card mt-4 border-success shadow-sm" id="resultCard" style="display:none;">
+    <div class="card-body">
+
+        <h3 class="text-center text-success mb-4">
+            🎓 SGPA Result
+        </h3>
+
+        <p><strong>📚 Total Subjects:</strong> <span id="totalSubjects">0</span></p>
+
+        <p><strong>🎓 Total Credits:</strong> <span id="totalCredits">0</span></p>
+
+        <p><strong>⭐ Total Grade Points:</strong> <span id="totalGradePoints">0</span></p>
+
+        <hr>
+
+        <h4 class="text-primary">
+            Final SGPA :
+            <span id="sgpaResult">0.00</span>
+        </h4>
+
+        <h5 id="performance" class="mt-3"></h5>
+
+    </div>
+</div>
+
+        </div>
+    </div>
+</div>
 
                     <!-- Sidebar Ad -->
                     <div class="col-lg-4 mt-5 mt-lg-0">
@@ -231,6 +329,53 @@
                 </div>
             </div>
         </section>
+        <section id="attendance" class="page-section">
+
+<div class="container py-5">
+
+    <h2 class="text-center text-primary mb-4">
+        📅 Attendance Calculator
+    </h2>
+
+    <div class="card shadow p-4">
+
+        <div class="mb-3">
+            <label class="form-label">Classes Attended</label>
+            <input type="number" id="attended" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Total Classes</label>
+            <input type="number" id="total" class="form-control">
+        </div>
+
+        <button class="btn btn-primary" onclick="calculateAttendance()">
+            Calculate Attendance
+        </button>
+
+        <button class="btn btn-secondary ms-2" onclick="resetAttendance()">
+            Reset
+        </button>
+
+        <div class="card mt-4 shadow-sm" id="attendanceResult" style="display:none;">
+            <div class="card-body">
+
+                <h4>Your Attendance</h4>
+
+                <h2 class="text-success">
+                    <span id="attendancePercent">0</span>%
+                </h2>
+
+                <h5 id="attendanceStatus"></h5>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
 
         <!-- About Section -->
         <section id="about" class="page-section">
@@ -467,6 +612,233 @@
             alert('Thank you for your message! This is a demo contact form.');
             e.target.reset();
         });
+        // Add Subject Row
+document.querySelector(".btn-success").addEventListener("click", function () {
+
+    const subjects = document.getElementById("subjects");
+
+    const row = document.createElement("div");
+
+    row.className = "row g-3 mb-3 subject-row";
+
+    row.innerHTML = `
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Subject Name (Optional)">
+        </div>
+
+        <div class="col-md-3">
+            <input type="number" class="form-control" placeholder="Credits">
+        </div>
+
+        <div class="col-md-3">
+            <select class="form-select">
+                <option>Select Grade</option>
+                <option>O</option>
+                <option>A+</option>
+                <option>A</option>
+                <option>B+</option>
+                <option>B</option>
+                <option>C</option>
+                <option>P</option>
+                <option>F</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-danger w-100 remove-btn">
+                Remove
+            </button>
+        </div>
+    `;
+
+    subjects.appendChild(row);
+
+});
+
+// Remove Subject
+document.addEventListener("click", function(e){
+
+    if(e.target.classList.contains("remove-btn")){
+
+        e.target.closest(".subject-row").remove();
+
+    }
+
+});
+// Calculate SGPA
+document.getElementById("calculateSGPA").addEventListener("click", function () {
+
+    const rows = document.querySelectorAll(".subject-row");
+
+    let totalCredits = 0;
+    let totalPoints = 0;
+
+    const gradePoints = {
+        "O":10,
+        "A+":9,
+        "A":8,
+        "B+":7,
+        "B":6,
+        "C":5,
+        "P":4,
+        "F":0
+    };
+
+    let validSubjects = 0;
+
+for (const row of rows) {
+
+    const credit = parseFloat(row.querySelector('input[type="number"]').value);
+
+    const grade = row.querySelector("select").value;
+
+    // Credit validation
+    if (isNaN(credit) || credit <= 0) {
+        alert("❌ Please enter a valid credit greater than 0 for every subject.");
+        return;
+    }
+
+    // Grade validation
+    if (!gradePoints.hasOwnProperty(grade)) {
+        alert("❌ Please select a grade for every subject.");
+        return;
+    }
+
+    totalCredits += credit;
+    totalPoints += credit * gradePoints[grade];
+    validSubjects++;
+}
+
+    if(totalCredits===0){
+
+        alert("Please enter valid credits and grades.");
+
+        return;
+
+    }
+
+    const sgpa = totalPoints / totalCredits;
+
+// Show Result Card
+document.getElementById("resultCard").style.display = "block";
+
+// Update Result Values
+document.getElementById("sgpaResult").innerText = sgpa.toFixed(2);
+document.getElementById("totalCredits").innerText = totalCredits;
+document.getElementById("totalGradePoints").innerText = totalPoints;
+document.getElementById("totalSubjects").innerText = validSubjects;
+
+// Performance Message
+let performance = "";
+
+if (sgpa >= 9) {
+    performance = "🟢 Excellent Performance";
+}
+else if (sgpa >= 8) {
+    performance = "🔵 Very Good";
+}
+else if (sgpa >= 7) {
+    performance = "🟡 Good";
+}
+else if (sgpa >= 6) {
+    performance = "🟠 Average";
+}
+else {
+    performance = "🔴 Needs Improvement";
+}
+
+const performanceElement = document.getElementById("performance");
+
+performanceElement.innerText = performance;
+
+// Remove previous Bootstrap badge colors
+performanceElement.className = "mt-3 badge fs-6";
+
+// Apply color based on SGPA
+if (sgpa >= 9) {
+    performanceElement.classList.add("bg-success");
+}
+else if (sgpa >= 8) {
+    performanceElement.classList.add("bg-primary");
+}
+else if (sgpa >= 7) {
+    performanceElement.classList.add("bg-warning", "text-dark");
+}
+else if (sgpa >= 6) {
+    performanceElement.classList.add("bg-orange");
+}
+else {
+    performanceElement.classList.add("bg-danger");
+}
+});
+// Reset SGPA Calculator
+document.getElementById("resetSGPA").addEventListener("click", function () {
+
+    const subjects = document.getElementById("subjects");
+
+    // Keep only the first row
+    while (subjects.children.length > 1) {
+        subjects.removeChild(subjects.lastElementChild);
+    }
+
+    // Clear first row inputs
+    const firstRow = subjects.querySelector(".subject-row");
+
+    firstRow.querySelector('input[type="text"]').value = "";
+    firstRow.querySelector('input[type="number"]').value = "";
+    firstRow.querySelector("select").selectedIndex = 0;
+
+    // Hide Result Card
+    document.getElementById("resultCard").style.display = "none";
+
+    // Reset Result Values
+    document.getElementById("sgpaResult").innerText = "0.00";
+    document.getElementById("totalSubjects").innerText = "0";
+    document.getElementById("totalCredits").innerText = "0";
+    document.getElementById("totalGradePoints").innerText = "0";
+    document.getElementById("performance").innerText = "";
+
+});
+// Attendance Calculator
+
+function calculateAttendance() {
+
+    const attended = parseFloat(document.getElementById("attended").value);
+    const total = parseFloat(document.getElementById("total").value);
+
+    if (isNaN(attended) || isNaN(total) || total <= 0 || attended > total) {
+        alert("Please enter valid values.");
+        return;
+    }
+
+    const percentage = ((attended / total) * 100).toFixed(2);
+
+    document.getElementById("attendancePercent").textContent = percentage;
+
+    let status = "";
+
+    if (percentage >= 90) {
+        status = "🟢 Excellent Attendance";
+    }
+    else if (percentage >= 75) {
+        status = "🟡 Good Attendance";
+    }
+    else {
+        status = "🔴 Attendance Below Requirement";
+    }
+
+    document.getElementById("attendanceStatus").textContent = status;
+
+    document.getElementById("attendanceResult").style.display = "block";
+}
+
+function resetAttendance() {
+
+    document.getElementById("attended").value = "";
+    document.getElementById("total").value = "";
+
+    document.getElementById("attendanceResult").style.display = "none";
+}
     </script>
 
     <!-- AdSense Auto Ads (Placeholder for user to insert their ID) -->
